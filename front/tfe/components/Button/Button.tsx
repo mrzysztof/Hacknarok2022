@@ -11,7 +11,7 @@ type TButton = OwnProps;
 
 export const Button: React.FC<TButton> = ({ label, onClick, icon }) => {
   return (
-    <TouchableOpacity style={styles.button}>
+    <TouchableOpacity onPress={onClick} style={styles.button}>
       <View style={styles.buttonContent}>
         <Text>{label}</Text>
       </View>

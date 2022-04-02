@@ -4,7 +4,6 @@ import { Button } from "../../components";
 import { userContext } from "../../context";
 
 export const Login: React.FC = () => {
-  const { login } = useContext(userContext);
 
   return (
     <SafeAreaView>
