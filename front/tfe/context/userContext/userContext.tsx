@@ -1,6 +1,6 @@
 import React from "react";
 
-type User =
+export type User =
   | {
       id: string;
       email: string;
@@ -18,7 +18,8 @@ interface Action {
 }
 
 interface IUserContextActions {
-  login: (email: string, password: string) => void;
+  login: (email: string, password: string) => Promise<void>;
+  fetchUser: () => Promise<boolean>;
 }
 
 export interface IUserContext extends IUserContextState, IUserContextActions {}
@@ -30,12 +31,13 @@ const initialState: IUserContextState = {
 
 enum UserContextActions {
   LOGIN = "LOGIN",
-  REFRESH_TOKENS = "REFRESH_TOKENS",
+  FETCH_USER = "FETCH_USER",
 }
 
 export const userContext = React.createContext<IUserContext>({
   ...initialState,
-  login: () => {},
+  login: async () => {},
+  fetchUser: async () => false,
 });
 
 const reducer = (
@@ -46,13 +48,19 @@ const reducer = (
     case UserContextActions.LOGIN:
       return state;
       break;
+    case UserContextActions.FETCH_USER:
+      return {
+        ...state,
+        user: action.payload,
+      };
+      break;
     default:
       return state;
   }
 };
 
 /**
- * Context containg logic for user (authentication and other services)
+ * Context containing logic for user (authentication and other services)
  *
  */
 export const UserContextProvider: React.FC = ({ children }) => {
@@ -60,11 +68,27 @@ export const UserContextProvider: React.FC = ({ children }) => {
 
   const value: IUserContext = {
     ...state,
-    login: (email: string, password: string) => {
-      console.log("login", { email, password });
+    login: async (email: string, password: string) => {
+      // @todo: use serice
       dispatch({
         type: UserContextActions.LOGIN,
         payload: { email, password },
+      });
+    },
+    fetchUser: async () => {
+      // @todo: use serice
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          dispatch({
+            type: UserContextActions.FETCH_USER,
+            payload: {
+              id: "123-asd",
+              email: "string@jasndjkasd.com",
+              configuration: {},
+            },
+          });
+          resolve(true);
+        }, 1500);
       });
     },
   };

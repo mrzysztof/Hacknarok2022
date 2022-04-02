@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
   useFonts,
   Roboto_400Regular,
@@ -6,6 +6,8 @@ import {
   Roboto_700Bold,
   Roboto_900Black,
 } from "@expo-google-fonts/roboto";
+import { userContext } from "../../../context";
+import { isUser } from "../../../utils/isUser";
 
 /**
  * This in an abstract component that wraps the application and
@@ -16,6 +18,10 @@ import {
  * loading screen.
  */
 export const AppBootstrapWrapper: React.FC = ({ children }) => {
+  const [authenticatingUser, setAuthenticatingUser] = useState<boolean>(true);
+
+  const { fetchUser } = useContext(userContext);
+
   // Initliaze font.
   let [fontsLoaded] = useFonts({
     Roboto_400Regular,
@@ -24,7 +30,19 @@ export const AppBootstrapWrapper: React.FC = ({ children }) => {
     Roboto_900Black,
   });
 
-  const appDidBootstrap = useMemo(() => fontsLoaded === true, [fontsLoaded]);
+  useEffect(() => {
+    const checkIfAuth = async () => {
+      await fetchUser();
+      setAuthenticatingUser(false);
+    };
+
+    checkIfAuth();
+  }, []);
+
+  const appDidBootstrap = useMemo(
+    () => fontsLoaded === true && authenticatingUser == false,
+    [fontsLoaded, authenticatingUser]
+  );
 
   // App is still loading
   if (!appDidBootstrap) return null;
