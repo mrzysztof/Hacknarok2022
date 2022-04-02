@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   button: {
     width: "100%",
     borderRadius: 4,
-    paddingVertical: 10,
+    paddingVertical: 15,
     backgroundColor: "#5d73e8",
     justifyContent: "center",
     textAlign: "center",
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
   label: {
     color:"white",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
     fontFamily: "Roboto_700Bold",
   },
