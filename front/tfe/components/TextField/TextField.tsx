@@ -25,11 +25,13 @@ export const TextField: React.FC<TextFieldProps> = (props) => {
 const styles = StyleSheet.create({
     textInput: {
         backgroundColor: "white",
-        borderRadius: 10,
+        borderRadius: 4,
         color: "grey",
+        width: "100%",
         height: '100%',
-        padding: 5,
-        maxHeight: 45,
-        marginBottom: 10
+        padding: 10,
+        maxHeight: 55,
+        fontSize: 18,
+        marginBottom: 20,
     },
 });
