@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Dimensions, Platform } from "react-native";
+import { View, Text, StyleSheet, Dimensions, Platform, Button, Alert } from "react-native";
 import { Camera } from "expo-camera"
+import * as MediaLibrary from 'expo-media-library';
+
 
 export const MyCamera: React.FC = (props) => {
     //  camera permissions
-    const [hasCameraPermission, setHasCameraPermission] = useState(null);
+    const [hasPermissions, setHasPermissions] = useState(false);
     const [camera, setCamera] = useState<any>(null);
 
     // Screen Ratio and image padding
@@ -12,15 +14,18 @@ export const MyCamera: React.FC = (props) => {
     const [ratio, setRatio] = useState('4:3');  // default is 4:3
     const { height, width } = Dimensions.get('window');
     const screenRatio = height / width;
+
     const [isRatioSet, setIsRatioSet] = useState(false);
 
     // on screen  load, ask for permission to use the camera
     useEffect(() => {
-        async function getCameraStatus() {
-            const { status } = await Camera.requestCameraPermissionsAsync();
-            setHasCameraPermission((status == 'granted') as any);
+        async function getMediaPermissions() {
+            const camStatus = (await Camera.requestCameraPermissionsAsync()).status;
+            const mediaStatus = await MediaLibrary.requestPermissionsAsync();
+            
+            setHasPermissions(camStatus == 'granted' && mediaStatus.granted);
         }
-        getCameraStatus();
+        getMediaPermissions();
     }, []);
 
     // set the camera ratio and padding.
@@ -30,7 +35,6 @@ export const MyCamera: React.FC = (props) => {
         // This issue only affects Android
         if (Platform.OS === 'android') {
             const ratios: any = await camera.getSupportedRatiosAsync();
-            console.log(ratios);
 
 
             // Calculate the width/height of each of the supported camera ratios
@@ -45,7 +49,8 @@ export const MyCamera: React.FC = (props) => {
                 realRatios[ratio] = realRatio;
                 // ratio can't be taller than screen, so we don't want an abs()
                 const distance = screenRatio - realRatio;
-                distances[ratio] = realRatio;
+                distances[ratio] = distance;
+
                 if (minDistance == null) {
                     minDistance = ratio;
                 } else {
@@ -63,7 +68,6 @@ export const MyCamera: React.FC = (props) => {
             // set the preview padding and preview ratio
             setImagePadding(remainder);
             setRatio(desiredRatio);
-            console.log(desiredRatio);
 
             // Set a flag so we don't do this 
             // calculation each time the screen refreshes
@@ -78,13 +82,13 @@ export const MyCamera: React.FC = (props) => {
         }
     };
     // return <Text>Hello</Text>
-    if (hasCameraPermission === null) {
+    if (hasPermissions === null) {
         return (
             <View style={styles.information} >
                 <Text>Waiting for camera permissions </Text>
             </View>
         );
-    } else if (hasCameraPermission === false) {
+    } else if (hasPermissions === false) {
         return (
             <View style={styles.information} >
                 <Text>No access to camera </Text>
@@ -99,17 +103,26 @@ export const MyCamera: React.FC = (props) => {
         since we know the screen dimensions
         */}
                 < Camera
-                    style={[styles.cameraPreview, { marginTop: 0, marginBottom: imagePadding * 2 }]}
+                    style={[styles.cameraPreview, { marginTop: imagePadding, marginBottom: imagePadding }]}
                     onCameraReady={setCameraReady}
-                    ratio={"16:9"}
+                    ratio={ratio}
                     ref={(ref) => {
                         setCamera(ref);
                     }
                     }>
                 </Camera>
+                <Button title="Zrób zdjęcie" onPress={() => takePhoto(camera)} />
             </View>
         );
     }
+}
+
+const takePhoto = (camera: Camera) => {
+    camera.takePictureAsync().then(res => {
+        MediaLibrary.saveToLibraryAsync(res.uri)
+            .then(res => { console.log("Saved photo succesfully " + res) })
+            .catch(e => { console.log("Could not save img " + e) })
+    })
 }
 
 const styles = StyleSheet.create({
