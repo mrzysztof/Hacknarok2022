@@ -1,5 +1,5 @@
 import * as SecureStore from "expo-secure-store";
-import { SecureStoreKeys } from "../../types/";
+import { SecureStoreKeys } from "../../declarations/types";
 
 /**
  * Communication with expo-secure-store for setting/getting authorization tokens.

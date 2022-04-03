@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { DEV_API, NODE_ENV, PROD_API } from "@env";
-import { TokenPair } from "../../types/";
+import { TokenPair } from "../../declarations/types";
 import TokensManager from "./TokensManager";
 import { isJwtExpired } from "../../utils/isJwtExpired";
 

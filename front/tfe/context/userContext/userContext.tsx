@@ -1,15 +1,8 @@
 import React from "react";
-
-export type User =
-  | {
-      id: string;
-      email: string;
-      configuration: {};
-    }
-  | boolean;
+import { DashboardActionTypes, User } from "../../declarations/types";
 
 interface IUserContextState {
-  user: User;
+  user: User | boolean;
 }
 
 interface Action {
@@ -84,7 +77,31 @@ export const UserContextProvider: React.FC = ({ children }) => {
             payload: {
               id: "123-asd",
               email: "string@jasndjkasd.com",
-              configuration: {},
+              configuration: [
+                {
+                  type: DashboardActionTypes.CALENDAR,
+                },
+                {
+                  type: DashboardActionTypes.CALL,
+                  callContacts: [
+                    {
+                      name: "Walter White",
+                      number: "9365902137",
+                    },
+                    {
+                      name: "Jane Doe",
+                      number: "9365909477",
+                    },
+                    {
+                      name: "Timmy Light",
+                      number: "9365909000",
+                    },
+                  ],
+                },
+                {
+                  type: DashboardActionTypes.WEATHER,
+                },
+              ],
             },
           });
           resolve(true);
