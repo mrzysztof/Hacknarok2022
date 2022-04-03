@@ -1,5 +1,7 @@
 import time
 from functools import wraps
+
+import flask.json
 from flask_cors import CORS
 import jwt
 import bcrypt as bcrypt
@@ -125,7 +127,7 @@ def login():
     response["success"] = True
     response["message"] = "Success"
 
-    return response, 200
+    return flask.json.jsonify(response), 200
 
 
 @app.route("/user_data", methods=["GET", "POST"])
