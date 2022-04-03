@@ -15,7 +15,7 @@
         crossorigin="anonymous"></script>
 
     <title>TFE configuration panel</title>
-    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="styles/style.css">
 </head>
 
 <body>
@@ -54,7 +54,7 @@
                 <h4>Contacts</h4>
             </div>
             <ul class="list-group list-group-flush">
-                <button id="contact-btn" type="button"
+                <button type="button"
                         data-bs-toggle="modal" data-bs-target="#contact-modal" 
                         class="list-group-item list-group-item-action list-group-item-success">
                     New contact
@@ -76,20 +76,21 @@
                             <input type="text" class="form-control" id="contact-name-input" required>
                         </div>
                         <div class="form-group">
-                            <label for="number" class="form-label">Number</label>
-                            <input type="tel" class="form-control" id="contact-numer-input" required>
+                            <label for="contact-name-input" class="form-label">Number</label>
+                            <input type="tel" class="form-control" id="contact-number-input" required>
                         </div>
                     </form>
                   
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Add contact</button>
+                  <button type="button" class="btn btn-primary" id="contact-btn">Add contact</button>
                 </div>
               </div>
             </div>
           </div>
     </div>
 </body>
+<script src="scripts/menu.js"></script>
 
 </html>
