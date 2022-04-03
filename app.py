@@ -9,7 +9,7 @@ from flask import Flask, request, render_template
 from backend.config import SECRET_KEY, CONNECTION_STRING, SALT
 from backend.user import User
 
-app = Flask(__name__, template_folder="../templates")
+app = Flask(__name__, template_folder="templates")
 
 app.config.update(
     TESTING=True,
