@@ -9,7 +9,7 @@ from flask import Flask, request, render_template
 from backend.config import SECRET_KEY, CONNECTION_STRING, SALT
 from backend.user import User
 
-app = Flask(__name__, template_folder="templates")
+app = Flask(__name__, template_folder="front/web-form/templates")
 
 app.config.update(
     TESTING=True,
@@ -45,7 +45,7 @@ def token_required(f):
 
 @app.route("/", methods=["GET"])
 def index():
-    return "Hello world"#render_template("templates/index.html")
+    return render_template("menu.html")
 
 
 def get_user_obj(user_name):
@@ -53,6 +53,16 @@ def get_user_obj(user_name):
     user_cursor = coll.find_one({"user_name": user_name})
     if user_cursor:
         return User(user_cursor)
+
+
+@app.route("/register", methods=["GET"])
+def register_user_render():
+    return render_template("register.html")
+
+
+@app.route("/login", methods=["GET"])
+def login_user_render():
+    return render_template("login.html")
 
 
 @app.route("/register", methods=["POST"])
@@ -134,11 +144,11 @@ def update_user():
     del user['_id']
     del user['pass_hash']
 
-    if "config" in data:
-        config = data["config"]
+    if "options" in data:
+        config = data["options"]
         coll.update_one({
             'user_name': user["user_name"]},
-            {"$set": {"config": config}}
+            {"$set": {"options": config}}
         )
     if "contacts" in data:
         contacts = data["contacts"]
