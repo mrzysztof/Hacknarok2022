@@ -83,10 +83,11 @@ loginBtn === null || loginBtn === void 0 ? void 0 : loginBtn.addEventListener("c
     })
         .then(response => response.json())
         .then(result => {
+            console.log(result["success"])
             if(result["success"]){
-                window.location.href = "/menu"
+                window.location.href = "/menu";
             }
-            else alert("Provided email or password is incorrect.")
+            else alert("Provided email or password is incorrect.");
         })
         .catch(error => console.error("Error:", error));
 });
