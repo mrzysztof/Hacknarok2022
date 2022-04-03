@@ -1,55 +1,25 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { DEV_API, NODE_ENV, PROD_API } from "@env";
-import { TokenPair } from "../../declarations/types";
+// import { DEV_API, NODE_ENV, PROD_API } from "@env";
+// import { TokenPair } from "../../declarations/types";
 import TokensManager from "./TokensManager";
 import { isJwtExpired } from "../../utils/isJwtExpired";
 
 // Base API url on module import
-const apiUrl = NODE_ENV === "development" ? DEV_API : PROD_API;
+const apiUrl = "https://floating-escarpment-35869.herokuapp.com";
 
 type fetchArgs = {
   requestConfig: AxiosRequestConfig;
 };
 
-const tokensHealthcheck = async (): Promise<TokenPair | undefined> => {
+const tokensHealthcheck = async (): Promise<string | undefined> => {
   let accessToken = await TokensManager.getAccessToken();
   let refreshToken = await TokensManager.getRefreshToken();
 
-  if (!refreshToken || !accessToken) return undefined;
+  if (!accessToken) return undefined;
 
-  if (isJwtExpired(accessToken)) {
-    /**
-     * @todo adjust to refresh endpoint
-     */
+  if (isJwtExpired(accessToken)) return undefined;
 
-    // Try to refresh token
-    const refreshResponse = await unathFetch(apiUrl, {
-      requestConfig: {
-        method: "POST",
-        headers: {
-          /* ... */
-        },
-      },
-    });
-
-    if (refreshResponse.status >= 400) return undefined;
-
-    // extract tokens from response and reassign
-    const { access_token, refresh_token } = refreshResponse.data;
-
-    await Promise.all([
-      TokensManager.setAccessToken(access_token),
-      TokensManager.setRefreshToken(refresh_token),
-    ]);
-
-    accessToken = access_token as string;
-    refreshToken = refresh_token as string;
-  }
-
-  return {
-    accessToken,
-    refreshToken,
-  };
+  return accessToken;
 };
 
 // For unprotected routes
@@ -59,10 +29,22 @@ const unathFetch = async (
 ): Promise<AxiosResponse> => {
   try {
     const { requestConfig: requestLibraryConfig } = args;
+    console.log(requestLibraryConfig);
     const response = await axios(url, requestLibraryConfig);
 
     return response;
   } catch (error) {
+    // @ts-ignore
+    // console.log(error.response.data)
+    // // @ts-ignore
+    // console.log(error.response.statusText)
+    // // @ts-ignore
+    // console.log(error.response.request)
+    // @ts-ignore
+    console.log(error.toJSON());
+    // @ts-ignore
+    console.log(Object.keys(error));
+    console.log(String(error));
     console.warn(error);
     throw error;
   }
@@ -74,16 +56,17 @@ const authFetch = async (url: string, args: fetchArgs) => {
 
     let config = requestLibraryConfig;
 
-    const tokens = await tokensHealthcheck();
+    const accessToken = await tokensHealthcheck();
 
-    if (tokens === undefined)
+    if (accessToken === undefined)
       throw new Error("authFetch: Cannot obtain new tokens");
 
     // Attach access token to the request
     config = {
       ...config,
       headers: {
-        Authorization: `Bearer ${tokens.accessToken}`,
+        ...config.headers,
+        "x-access-token": accessToken,
       },
     };
 
@@ -108,13 +91,17 @@ export const fetchApi = async <RES>(
   args: fetchArgs,
   authorizedRequest: boolean = false
 ): Promise<RES> => {
+  const fullPath = `${apiUrl}${path}`;
   const response = await (async () => {
     if (authorizedRequest) {
-      return await authFetch(path, args);
+      return await authFetch(fullPath, args);
     } else {
-      return await unathFetch(path, args);
+      console.log("unath");
+      return await unathFetch(fullPath, args);
     }
   })();
+
+  console.log(Object.keys(response));
 
   if (response.status >= 400) throw new Error(response.statusText);
 

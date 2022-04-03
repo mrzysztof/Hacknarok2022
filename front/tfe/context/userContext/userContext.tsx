@@ -1,5 +1,6 @@
 import React from "react";
-import { DashboardActionTypes, User } from "../../declarations/types";
+import { userService } from "../../core/services";
+import { User } from "../../declarations/types";
 
 interface IUserContextState {
   user: User | boolean;
@@ -11,7 +12,7 @@ interface Action {
 }
 
 interface IUserContextActions {
-  login: (email: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
   fetchUser: () => Promise<boolean>;
 }
 
@@ -61,51 +62,51 @@ export const UserContextProvider: React.FC = ({ children }) => {
 
   const value: IUserContext = {
     ...state,
-    login: async (email: string, password: string) => {
+    login: async (username: string, password: string) => {
+      const loginRes = await userService.login(username, password);
       // @todo: use serice
       dispatch({
         type: UserContextActions.LOGIN,
-        payload: { email, password },
+        payload: { username, password },
       });
     },
     fetchUser: async () => {
       // @todo: use serice
       return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          dispatch({
-            type: UserContextActions.FETCH_USER,
-            payload: {
-              id: "123-asd",
-              email: "string@jasndjkasd.com",
-              configuration: [
-                {
-                  type: DashboardActionTypes.CALENDAR,
-                },
-                {
-                  type: DashboardActionTypes.CALL,
-                  callContacts: [
-                    {
-                      name: "Walter White",
-                      number: "9365902137",
-                    },
-                    {
-                      name: "Jane Doe",
-                      number: "9365909477",
-                    },
-                    {
-                      name: "Timmy Light",
-                      number: "9365909000",
-                    },
-                  ],
-                },
-                {
-                  type: DashboardActionTypes.WEATHER,
-                },
-              ],
-            },
-          });
-          resolve(true);
-        }, 1500);
+        resolve(true);
+        dispatch({
+          type: UserContextActions.FETCH_USER,
+          payload: false,
+          //   payload: {
+          //     id: "123-asd",
+          //     email: "string@jasndjkasd.com",
+          //     configuration: [
+          //       {
+          //         type: DashboardActionTypes.CALENDAR,
+          //       },
+          //       {
+          //         type: DashboardActionTypes.CALL,
+          //         callContacts: [
+          //           {
+          //             name: "Walter White",
+          //             number: "9365902137",
+          //           },
+          //           {
+          //             name: "Jane Doe",
+          //             number: "9365909477",
+          //           },
+          //           {
+          //             name: "Timmy Light",
+          //             number: "9365909000",
+          //           },
+          //         ],
+          //       },
+          //       {
+          //         type: DashboardActionTypes.WEATHER,
+          //       },
+          //     ],
+          //   },
+        });
       });
     },
   };
