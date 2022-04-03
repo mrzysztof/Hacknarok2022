@@ -45,7 +45,7 @@ def token_required(f):
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html")
+    return "Hello world"#render_template("templates/index.html")
 
 
 def get_user_obj(user_name):
