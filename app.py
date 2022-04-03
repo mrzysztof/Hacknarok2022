@@ -33,10 +33,10 @@ def token_required(f):
         try:
             coll = db["user"]
             data = jwt.decode(token, app.config["SECRET_KEY"], algorithms="HS256")
-            current_user = coll.find_one({'user_id': data['user_id']})
+            current_user = coll.find_one({'user_name': data['user_name']})
             if not current_user:
                 return 'Unauthorized Access!', 401
-        except:
+        except Exception as e:
             return 'Unauthorized Access!', 401
         return f(*args, **kwargs)
 
@@ -128,8 +128,9 @@ def login():
 @app.route("/user_data", methods=["GET", "POST"])
 @token_required
 def get_user():
-    user_name = request.form["user_name"]
     coll = db["user"]
+    print(request.headers)
+    user_name = User.decode_auth_token(request.headers["X-Access-Token"])
     user = coll.find_one({"user_name": user_name})
     del user['_id']
     del user['pass_hash']
