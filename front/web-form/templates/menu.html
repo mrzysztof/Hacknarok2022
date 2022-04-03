@@ -163,11 +163,7 @@ contactBtn === null || contactBtn === void 0 ? void 0 : contactBtn.addEventListe
     fd.append("number", number.value);
     fetch("https://floating-escarpment-35869.herokuapp.com/update_user", {
         method: "POST",
-        body: fd,
-        headers: {
-            'Content-Type': 'application/json',
-            "x-access-token": token ? token : "0"
-        }
+        body: fd
     })
     .then(response => response.json())
     .then(result => alert("Contact added successfully."))
