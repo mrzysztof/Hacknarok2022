@@ -6,14 +6,14 @@ registrationBtn === null || registrationBtn === void 0 ? void 0 : registrationBt
     window.location.href = "/register";
 });
 loginBtn === null || loginBtn === void 0 ? void 0 : loginBtn.addEventListener("click", () => {
+    let fd = new FormData();
     const email = document.getElementById("email-input");
     const password = document.getElementById("password-input");
+    fd.append("user_name", email.value);
+    fd.append("password", password.value);
     fetch("https://floating-escarpment-35869.herokuapp.com/login", {
         method: "POST",
-        body: JSON.stringify({
-            "user_name": email.value,
-            "password": password.value
-        })
+        body: fd
     })
         .then(response => response.json())
         .then(result => console.log(result))
