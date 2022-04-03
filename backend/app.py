@@ -4,7 +4,7 @@ from functools import wraps
 import jwt
 import bcrypt as bcrypt
 from pymongo import MongoClient
-from flask import Flask, request
+from flask import Flask, request, render_template
 
 from backend.config import SECRET_KEY, CONNECTION_STRING, SALT
 from backend.user import User
@@ -41,6 +41,11 @@ def token_required(f):
         return f(*args, **kwargs)
 
     return decorated
+
+
+@app.route("/", methods=["GET"])
+def index():
+    return render_template("index.html")
 
 
 def get_user_obj(user_name):
