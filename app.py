@@ -9,7 +9,8 @@ from flask import Flask, request, render_template
 from backend.config import SECRET_KEY, CONNECTION_STRING, SALT
 from backend.user import User
 
-app = Flask(__name__, template_folder="front/web-form/templates")
+app = Flask(__name__, template_folder="front/web-form/templates", static_url_path="/front/web-form",
+            static_folder="/front/web-form")
 
 app.config.update(
     TESTING=True,
@@ -19,6 +20,9 @@ app.config.update(
 
 client = MongoClient(CONNECTION_STRING)
 db = client["TFE_DB"]
+
+print(app.static_url_path)
+print(app.static_folder)
 
 
 def token_required(f):
@@ -45,6 +49,12 @@ def token_required(f):
 
 @app.route("/", methods=["GET"])
 def index():
+    return render_template("login.html")
+
+
+@token_required
+@app.route("/menu", methods=["GET"])
+def menu():
     return render_template("menu.html")
 
 
@@ -153,17 +163,20 @@ def update_user():
     del user['pass_hash']
 
     if "options" in data:
-        config = data["options"]
-        coll.update_one({
-            'user_name': user["user_name"]},
-            {"$set": {"options": config}}
-        )
+        options = data["options"]
+        print(options)
+        for option in options.keys():
+            coll.update_one({
+                'user_name': user["user_name"]},
+                {"$set": {f"options.{option}": options[option]}}
+            )
     if "contacts" in data:
         contacts = data["contacts"]
-        coll.update_one({
-            'user_name': user["user_name"]},
-            {"$set": {"contacts": contacts}}
-        )
+        for contact in contacts.keys():
+            coll.update_one({
+                'user_name': user["user_name"]},
+                {"$set": {f"contacts.{contact}": contacts[contact]}}
+            )
     if user:
         return user, 200
 
