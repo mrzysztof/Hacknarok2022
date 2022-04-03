@@ -9,7 +9,7 @@ from flask import Flask, request, render_template
 from backend.config import SECRET_KEY, CONNECTION_STRING, SALT
 from backend.user import User
 
-app = Flask(__name__, template_folder="front/web-form/templates", static_url_path="/front/web-form",
+app = Flask(__name__, template_folder="front/web-form/templates", static_url_path="",
             static_folder="/front/web-form")
 CORS(app)
 app.config.update(
