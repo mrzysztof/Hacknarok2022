@@ -5,9 +5,16 @@ import { TextField } from "../../components/TextField";
 import { userContext } from "../../context";
 
 export const Login: React.FC = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useContext(userContext);
+
+  const handleLogin = async () => {
+    if (username.length > 0 && password.length > 0) {
+      console.log({ username, password });
+      await login(username, password);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safeAreaStyle}>
@@ -18,21 +25,20 @@ export const Login: React.FC = () => {
             Teaching your babcia how to use her phone was never this easy
           </Text>
           <View style={styles.formView}>
-            <TextField placeholder="Email" onChange={setEmail}></TextField>
+            <TextField
+              placeholder="Username"
+              onChange={setUsername}
+              secure={false}
+            ></TextField>
             <TextField
               placeholder="Password"
-              secure={true}
+              secure
               onChange={setPassword}
             ></TextField>
           </View>
         </View>
 
-        <Button
-          label="Submit"
-          onClick={() => {
-            console.log({ email, password });
-          }}
-        />
+        <Button label="Submit" onClick={handleLogin} />
       </View>
     </SafeAreaView>
   );
