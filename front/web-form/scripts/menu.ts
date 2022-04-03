@@ -3,6 +3,9 @@ const contactBtn = document.getElementById("contact-btn");
 const token = localStorage.getItem("token");
 
 let switches = Array.from(document.getElementsByClassName("form-check-input")) as HTMLInputElement[];
+let options = [];
+let contacts = [];
+
 
 
 switches.forEach((opt) => {

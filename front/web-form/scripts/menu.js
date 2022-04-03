@@ -3,6 +3,8 @@ const contactForm = document.getElementById("contact-form");
 const contactBtn = document.getElementById("contact-btn");
 const token = localStorage.getItem("token");
 let switches = Array.from(document.getElementsByClassName("form-check-input"));
+let options = [];
+let contacts = [];
 switches.forEach((opt) => {
     let fd = new FormData();
     fd.append(opt.id, opt.checked.toString());
