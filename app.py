@@ -102,15 +102,22 @@ def login():
     }
 
     user = get_user_obj(user_data["user_name"])
+    print(user, type(user))
     if user is None:
         return response, 404
+    print("pre hash")
 
     hashed_password = bcrypt.hashpw(user_data["password"].encode(), SALT)
-
+    print("post hash")
     if hashed_password != user.pass_hash:
         return response, 404
-
+    print(hashed_password, type(hashed_password))
+    print("pre token")
     token = user.encode_auth_token()
+    print(token, type(token))
+    print("post token")
+    print(response)
+
     response["token"] = token
     response["success"] = True
     response["message"] = "Success"
