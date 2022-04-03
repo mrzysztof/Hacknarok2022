@@ -1,11 +1,17 @@
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { CoreNavigation } from "./core/navigation/CoreNavigation";
+import { AppBootstrapWrapper, CoreNavigation } from "./core";
+import { UserContextProvider } from "./context";
 
 export default function App() {
   return (
     <SafeAreaProvider>
-      <CoreNavigation />
+      <UserContextProvider>
+        <AppBootstrapWrapper>
+          <CoreNavigation />
+        </AppBootstrapWrapper>
+      </UserContextProvider>
+
       <StatusBar />
     </SafeAreaProvider>
   );

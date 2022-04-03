@@ -1,18 +1,31 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet, Text } from "react-native";
+import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 
 interface OwnProps {
   label: string;
   icon?: string;
+  bgColor?: string;
+  fontSize?: number;
   onClick: () => void;
 }
 
 type TButton = OwnProps;
 
-export const Button: React.FC<TButton> = ({ label, onClick, icon }) => {
+export const Button: React.FC<TButton> = ({
+  label,
+  onClick,
+  icon,
+  bgColor,
+  fontSize,
+}) => {
   return (
-    <TouchableOpacity style={styles.button}>
-      <Text>{label}</Text>
+    <TouchableOpacity
+      onPress={onClick}
+      style={[styles.button, bgColor ? { backgroundColor: bgColor } : {}]}
+    >
+      <View style={styles.buttonContent}>
+        <Text style={[styles.label, { fontSize }]}>{label}</Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -20,9 +33,22 @@ export const Button: React.FC<TButton> = ({ label, onClick, icon }) => {
 const styles = StyleSheet.create({
   button: {
     width: "100%",
-    borderRadius: 2,
+    borderRadius: 4,
     paddingVertical: 15,
-    backgroundColor: "#3E6990",
+    backgroundColor: "#5d73e8",
     justifyContent: "center",
+    textAlign: "center",
+  },
+  buttonContent: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  label: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+    fontFamily: "Roboto_700Bold",
   },
 });
