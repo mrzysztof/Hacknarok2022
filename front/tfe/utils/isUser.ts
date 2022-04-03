@@ -1,4 +1,4 @@
-import { User } from "../context";
+import { User } from "../declarations/types";
 
 /**
  * Check if given object is a User object.

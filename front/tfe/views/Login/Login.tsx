@@ -5,8 +5,8 @@ import { TextField } from "../../components/TextField";
 import { userContext } from "../../context";
 
 export const Login: React.FC = () => {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { login } = useContext(userContext);
 
   return (
@@ -14,14 +14,25 @@ export const Login: React.FC = () => {
       <View style={styles.loginContainer}>
         <View style={styles.headerView}>
           <Text style={styles.loginHeader}>Mobile Babcia</Text>
-          <Text style={styles.loginSubheader}>Teaching your babcia how to use her phone was never this easy</Text>
+          <Text style={styles.loginSubheader}>
+            Teaching your babcia how to use her phone was never this easy
+          </Text>
           <View style={styles.formView}>
             <TextField placeholder="Email" onChange={setEmail}></TextField>
-            <TextField placeholder="Password" secure={true} onChange={setPassword}></TextField>
+            <TextField
+              placeholder="Password"
+              secure={true}
+              onChange={setPassword}
+            ></TextField>
           </View>
         </View>
 
-        <Button label="Submit" onClick={() => { console.log({ email, password }) }} />
+        <Button
+          label="Submit"
+          onClick={() => {
+            console.log({ email, password });
+          }}
+        />
       </View>
     </SafeAreaView>
   );
@@ -30,24 +41,24 @@ export const Login: React.FC = () => {
 const styles = StyleSheet.create({
   formView: {
     width: "100%",
-    flex: 1
+    flex: 1,
   },
   safeAreaStyle: {
-    height: "100%"
+    height: "100%",
   },
   loginContainer: {
     height: "100%",
     width: "100%",
-    display: 'flex',
+    display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
     padding: 30,
-    flex: 1
+    flex: 1,
   },
   headerView: {
     flex: 1,
-    width: "100%"
+    width: "100%",
   },
   loginHeader: {
     fontSize: 42,
@@ -59,7 +70,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "400",
     textAlign: "center",
-    marginBottom: 40
-  }
+    marginBottom: 40,
+  },
 });
-

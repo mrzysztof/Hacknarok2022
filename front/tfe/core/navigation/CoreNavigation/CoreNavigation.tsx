@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import { Login } from "../../../views";
+import { Login, Dashboard } from "../../../views";
 import { userContext } from "../../../context";
 import { isUser } from "../../../utils/isUser";
 
@@ -28,8 +28,8 @@ export const CoreNavigation: React.FC = () => {
           <>
             <Stack.Screen
               name="Dashboard"
-              component={Login}
-              options={{ headerShown: true }}
+              component={Dashboard}
+              options={{ headerShown: false }}
             />
           </>
         )}
