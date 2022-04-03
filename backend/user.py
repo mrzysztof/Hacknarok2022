@@ -15,7 +15,7 @@ class User:
         try:
             payload = {
                 'exp': datetime.utcnow() + timedelta(hours=24),
-                'user_id': self.id
+                'user_name': self.user_name
             }
             return jwt.encode(
                 payload,
@@ -28,8 +28,8 @@ class User:
     @staticmethod
     def decode_auth_token(auth_token):
         try:
-            payload = jwt.decode(auth_token, SECRET_KEY)
-            return payload['sub']
+            payload = jwt.decode(auth_token, SECRET_KEY, algorithms='HS256')
+            return payload['user_name']
         except jwt.ExpiredSignatureError:
             return 'Signature expired. Please log in again.'
         except jwt.InvalidTokenError:

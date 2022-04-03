@@ -124,7 +124,7 @@ def update_user():
     coll = db["user"]
     data = request.get_json()
 
-    user_name = data["user_name"]
+    user_name = User.decode_auth_token(request.headers["X-Access-Token"])
     user = coll.find_one({"user_name": user_name})
     del user['_id']
     del user['pass_hash']
