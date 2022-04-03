@@ -175,7 +175,7 @@ def update_user():
     if user:
         return user, 200
 
-    return {}, 200
+    return flask.json.jsonify({}), 400
 
 
 if __name__ == '__main__':
