@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
+
+    <title>TFE configuration panel</title>
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+
+<body>
+    <h1>TFE configuration panel</h1>
+    <div class="root h-75 w-50 px-5 pb-5">
+        <h2>Your configuration</h2>
+        <div class="card mt-4" id="options-card">
+            <div class="card-header">
+                <h4>Options</h4>
+            </div>
+            <ul class="list-group list-group-flush">
+                <div class="list-group-item list-group-item-action form-check form-switch">
+                    <input type="checkbox" class="form-check-input mx-1" id="call-switch" role="switch">
+                    <label class="form-check-label mx-1" for="call-switch">Calls</label>
+                  </div>
+                  <div class="list-group-item list-group-item-action form-check form-switch">
+                    <input type="checkbox" class="form-check-input mx-1" id="sms-switch" role="switch">
+                    <label class="form-check-label mx-1" for="sms-switch">SMS</label>
+                  </div>
+                  <div class="list-group-item list-group-item-action form-check form-switch">
+                    <input type="checkbox" class="form-check-input mx-1" id="calendar-switch" role="switch">
+                    <label class="form-check-label mx-1" for="calendar-switch">Calendar</label>
+                  </div>
+                  <div class="list-group-item list-group-item-action form-check form-switch">
+                    <input type="checkbox" class="form-check-input mx-1" id="weather-switch" role="switch">
+                    <label class="form-check-label mx-1" for="weather-switch">Weather</label>
+                  </div>
+                  <div class="list-group-item list-group-item-action form-check form-switch">
+                    <input type="checkbox" class="form-check-input mx-1" id="radio-switch" role="switch">
+                    <label class="form-check-label mx-1" for="radio-switch">Radio</label>
+                  </div>
+            </ul>
+        </div>
+        <div class="card mt-4" id="contacts-card">
+            <div class="card-header">
+                <h4>Contacts</h4>
+            </div>
+            <ul class="list-group list-group-flush">
+                <button id="contact-btn" type="button"
+                        data-bs-toggle="modal" data-bs-target="#contact-modal" 
+                        class="list-group-item list-group-item-action list-group-item-success">
+                    New contact
+                </button>
+            </ul>
+        </div>
+
+        <div class="modal fade" id="contact-modal" tabindex="-1" aria-labelledby="contact-modal-label" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="contact-modal-label">New contact</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="contact-form" class="d-flex flex-column">
+                        <div class="form-group">
+                            <label for="contact-name-input" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="contact-name-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="number" class="form-label">Number</label>
+                            <input type="tel" class="form-control" id="contact-numer-input" required>
+                        </div>
+                    </form>
+                  
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Add contact</button>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+</body>
+
+</html>
